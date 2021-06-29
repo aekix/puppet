@@ -13,8 +13,8 @@ package {
 file {
 'download':
   ensure => present,
-  path   => '/usr/src/dokuwiki.tgz'
-  source => 'https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz',
+  path   => '/usr/src/dokuwiki.tgz',
+  source => 'https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz'
 }
 
 exec {
@@ -27,42 +27,42 @@ exec {
 
 file {
 'rename':
-  ensure => present,
-  source => '/usr/src/dokuwiki-2020-07-29',
-  path   => '/usr/src/dokuwiki',
+  ensure  => present,
+  source  => '/usr/src/dokuwiki-2020-07-29',
+  path    => '/usr/src/dokuwiki',
   require => File['unzip']
 }
 
 file {
 'rights recettes':
-  path   => '/var/www/recettes.wiki',
+  encure  => directory,
+  path    => '/var/www/recettes.wiki',
   recurse => true,
   owner   => 'www-data',
-  ensure => directory,
   group   => 'www-data'
 }
 
 file {
 'rights politique':
-  path   => '/var/www/politique.wiki',
+  encuse  => directory,
+  path    => '/var/www/politique.wiki',
   recurse => true,
-  ensure => directory,
   owner   => 'www-data',
   group   => 'www-data'
 }
 
 file {
 'Cp recettes.wiki':
-  ensure => present,
-  source => '/usr/src/dokuwiki',
-  path   => '/var/www/recettes.wiki',
+  ensure  => present,
+  source  => '/usr/src/dokuwiki',
+  path    => '/var/www/recettes.wiki',
   require => [File['rights recettes'], File['rename']]
 }
 
 file {
 'Cp politique.wiki':
-  ensure => present,
-  source => '/usr/src/dokuwiki',
-  path   => '/var/www/politique.wiki',
+  ensure  => present,
+  source  => '/usr/src/dokuwiki',
+  path    => '/var/www/politique.wiki',
   require => [File['rights politique'], File['rename']]
 }
