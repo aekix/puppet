@@ -21,14 +21,16 @@ exec {
 'unzip':
   command => 'tar xavf dokuwiki.tgz',
   cwd     => '/usr/src',
-  path    => ['/usr/bin']
+  path    => ['/usr/bin'],
+  require => File['download']
 }
 
 file {
 'rename':
   ensure => present,
   source => '/usr/src/dokuwiki-2020-07-29',
-  path   => '/usr/src/dokuwiki'
+  path   => '/usr/src/dokuwiki',
+  require => File['unzip']
 }
 
 file {
@@ -53,12 +55,14 @@ file {
 'Cp recettes.wiki':
   ensure => present,
   source => '/usr/src/dokuwiki',
-  path   => '/var/www/recettes.wiki'
+  path   => '/var/www/recettes.wiki',
+  require => [File['rights recettes'], File['rename']]
 }
 
 file {
 'Cp politique.wiki':
   ensure => present,
   source => '/usr/src/dokuwiki',
-  path   => '/var/www/politique.wiki'
+  path   => '/var/www/politique.wiki',
+  require => [File['rights politique'], File['rename']]
 }
