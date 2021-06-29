@@ -1,4 +1,4 @@
-class dokuwiki {
+class dokuwiki ($site = 'recettes') {
 	package {
 	'apache2':
 	  ensure   => present,
@@ -38,18 +38,7 @@ class dokuwiki {
 	file {
 	'rights recettes and cp':
 	  ensure  => directory,
-	  path    => '/var/www/recettes.wiki',
-	  source  => '/usr/src/dokuwiki',
-	  recurse => true,
-	  owner   => 'www-data',
-	  group   => 'www-data',
-	  require => [File['rename']]
-	}
-
-	file {
-	'rights politique and cp':
-	  ensure  => directory,
-	  path    => '/var/www/politique.wiki',
+	  path    => '/var/www/$site.wiki',
 	  source  => '/usr/src/dokuwiki',
 	  recurse => true,
 	  owner   => 'www-data',
@@ -58,6 +47,13 @@ class dokuwiki {
 	}
 }
 
+node server0 {
+  class {
+    dokuwiki:
+      site => "politique",
+  }
+}
+
 node server1 {
-	include dokuwiki
+  class {dokuwiki:}
 }
