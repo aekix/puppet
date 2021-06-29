@@ -57,3 +57,7 @@ class dokuwiki {
 	  require => [File['rename']]
 	}
 }
+
+node server1 {
+	include dokuwiki
+}
