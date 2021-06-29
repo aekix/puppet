@@ -22,6 +22,7 @@ exec {
   command => 'tar xavf dokuwiki.tgz',
   cwd     => '/usr/src',
   path    => ['/usr/bin'],
+  unless  => 'find /usr/src/dokuwiki-2020-07-29',
   require => File['download']
 }
 
@@ -30,39 +31,27 @@ file {
   ensure  => present,
   source  => '/usr/src/dokuwiki-2020-07-29',
   path    => '/usr/src/dokuwiki',
-  require => File['unzip']
+  require => Exec['unzip']
 }
 
 file {
-'rights recettes':
-  encure  => directory,
+'rights recettes and cp':
+  ensure  => directory,
   path    => '/var/www/recettes.wiki',
+  source  => '/usr/src/dokuwiki',
   recurse => true,
   owner   => 'www-data',
-  group   => 'www-data'
+  group   => 'www-data',
+  require => [File['rename']]
 }
 
 file {
-'rights politique':
-  encuse  => directory,
+'rights politique and cp':
+  ensure  => directory,
   path    => '/var/www/politique.wiki',
+  source  => '/usr/src/dokuwiki',
   recurse => true,
   owner   => 'www-data',
-  group   => 'www-data'
-}
-
-file {
-'Cp recettes.wiki':
-  ensure  => present,
-  source  => '/usr/src/dokuwiki',
-  path    => '/var/www/recettes.wiki',
-  require => [File['rights recettes'], File['rename']]
-}
-
-file {
-'Cp politique.wiki':
-  ensure  => present,
-  source  => '/usr/src/dokuwiki',
-  path    => '/var/www/politique.wiki',
-  require => [File['rights politique'], File['rename']]
+  group   => 'www-data',
+  require => [File['rename']]
 }
